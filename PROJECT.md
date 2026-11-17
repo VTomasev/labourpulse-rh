@@ -1,0 +1,254 @@
+# LabourPulse RH — projektna dokumentacija
+
+## Sažetak
+
+LabourPulse RH je interaktivni analitički pregled otvorenih podataka o potražnji
+za radnicima u Hrvatskoj. Projekt povezuje HZZ oglase za posao, MUP-ove izdane
+dozvole za boravak i rad te DZS podatke o stanovništvu i radnoj snazi.
+
+Rezultat je namijenjen građanima, poslodavcima, lokalnoj upravi i donositeljima
+odluka koji žele istražiti gdje se objavljuje najviše HZZ oglasa, koja se
+zanimanja traže i u kojim su djelatnostima izdane MUP-ove dozvole za boravak i rad.
+
+## Pregled stranica
+
+### Zanimanja po regijama
+
+Početna stranica omogućuje usporedbu skupina zanimanja među regijama prema
+ukupnom broju oglasa, oglasima na 1.000 stanovnika i oglasima na 1.000
+stanovnika u dobi 15–64.
+
+![Početna stranica – zanimanja po regijama](docs/zanimanja-po-regijama.png)
+
+### Regionalna analiza
+
+Regionalna analiza prikazuje usporedbu regija i demografski kontekst. MUP-ove
+dozvole nalaze se u zasebnom dijelu i ne ulaze u izračun pokazatelja oglasa.
+
+![Regionalna analiza](docs/regionalna-analiza.png)
+
+### Sažetak
+
+Sažetak prikazuje ključne brojke projekta i najvažnije regionalne te
+demografske pokazatelje na jednom mjestu.
+
+![Sažetak tržišta rada](docs/sazetak.png)
+
+### Zanimanja i djelatnosti
+
+Stranica omogućuje pretragu HZZ oglasa i kategorija zanimanja te zasebno
+prikazuje MUP-ove djelatnosti s izdanim dozvolama.
+
+![Zanimanja i djelatnosti](docs/zanimanja-i-djelatnosti.png)
+
+### Podaci i metodologija
+
+Ova stranica objašnjava izvore, obradu i ograničenja kako bi korisnik mogao
+ispravno tumačiti rezultate.
+
+![Podaci i metodologija](docs/metodologija.png)
+
+## Usklađenost s natjecanjem
+
+Projekt odgovara kategoriji **Gospodarstvo i učinkovito upravljanje** jer:
+
+- pretvara više javnih izvora u razumljiv regionalni pregled,
+- stavlja zanimanja i usporedbu zanimanja po regijama u prvi plan,
+- prikazuje dobnu strukturu stanovništva kao regionalni kontekst,
+- daje podatkovnu podlogu za planiranje obrazovanja, zapošljavanja i lokalnih mjera,
+- prikazuje najtraženija zanimanja i djelatnosti,
+- jasno razlikuje činjenice od interpretacije i prikazuje razdoblje svakog izvora,
+- omogućuje izvoz tablica u XLSX za daljnju analizu i rad uprave.
+
+### Mapiranje na kriterije ocjenjivanja
+
+| Kriterij iz pravila | Kako ga projekt ispunjava |
+|---|---|
+| Korištenje otvorenih podataka | HZZ RSS, MUP javne statistike i DZS skupovi podataka; izvori, poveznice i datum preuzimanja su javno navedeni. |
+| Relevantnost | Projekt odgovara na konkretno pitanje gdje su potrebe za radnicima najveće i koja su zanimanja tražena. |
+| Uključivanje i korist za zajednicu | Javni dashboard je razumljiv građanima, poslodavcima i upravi; tablice se mogu preuzeti u XLSX-u za daljnju uporabu. |
+| Inovativnost i primjena tehnologije | Više javnih izvora objedinjeno je u interaktivnu analizu s filtrima, regionalnom usporedbom i XLSX izvozom. |
+| Izvedivost i integracijski potencijal | Projekt je reproducibilan iz lokalno spremljenih izvadaka, koristi jednostavan Streamlit/Pandas sloj i jasno odvaja učitavanje podataka od prikaza. |
+| Prezentacija | Aplikacija vodi korisnika od sažetka preko regionalne usporedbe do zanimanja, djelatnosti i metodologije. |
+
+U snapshotu HZZ-a nalazi se 5.920 oglasa; 5.373 (90,8 %) imaju prepoznatu
+kategoriju, dok 547 ostaje „Nerazvrstano”. Konzervativna pravila naslova
+povećala su udio razvrstanih oglasa s 84,7 % na 90,8 %. Prikaz zadržava izvorni
+naslov, izvornu kategoriju i izvor klasifikacije kako bi se rezultat mogao
+provjeriti. Ovaj udio opisuje spremljeni izvadak i mijenjat će se s novim
+HZZ podacima.
+
+Regionalni prikazi odvajaju HZZ oglase od MUP-ovih dozvola. Zanimanja se
+uspoređuju među regijama prema oglasima, a MUP-ove dozvole prikazuju se kao
+zaseban kontekst; projekt ne izračunava kompozitni indeks pritiska ili manjka
+radnika.
+
+## Tehnička arhitektura i integracijski potencijal
+
+- Višestranično sučelje izrađeno je u Streamlitu; Pandas obrađuje tablice,
+  Plotly prikazuje grafikone, a XLSX izvoz izrađuje se pomoću openpyxl.
+- Uvoz je lokalni i ponovljiv: HZZ XML/RSS, DZS CSV/XLSX i MUP XLSX datoteke
+  čitaju se iz projektnih direktorija. Nema baze podataka ni automatskog
+  dohvaćanja izvora tijekom rada aplikacije.
+- Obrada čisti nazive regija, spaja Zagreb prema obuhvatu MUP-a, uklanja
+  HZZ zapise s istom regionalnom oznakom i identifikatorom oglasa te izračunava
+  pokazatelje po stanovniku. Rezultati se prikazuju u pregledniku i izvoze u XLSX.
+- Za povezivanje s drugim sustavima potrebni su stabilni identifikatori
+  prostornih jedinica, dokumentirani metapodaci i verzije skupova, dogovoreni
+  formati razmjene (npr. CSV/JSON) te redovito ažuriranje i validacija izvora.
+
+## Ključna pitanja
+
+1. Koja se zanimanja oglašavaju u Hrvatskoj i kako se njihov broj razlikuje po regijama?
+2. Kako se oglasi razlikuju kada ih prikažemo na 1.000 stanovnika ili na 1.000 stanovnika u dobi 15–64?
+3. Kakav je udio stanovništva u dobi 15–64 i 65+ po regijama?
+4. Koje djelatnosti imaju najviše izdanih MUP-ovih dozvola kao dodatni kontekst?
+5. Kako se u dostupnoj DZS seriji kreću zaposlenost i nezaposlenost?
+
+## Korišteni podaci
+
+Podaci su preuzeti 09.11.2026. i spremljeni u `data/`, `dozvole/` i
+`stanovništvo/`. Budući da su izvori podložni izmjenama, datum preuzimanja je
+sastavni dio rezultata.
+
+| Izvor | Uloga | Ponovno preuzimanje |
+|---|---|---|
+| HZZ RSS po županijama | oglasi po regionalnoj jedinici | [RSS katalog](http://burzarada.hzz.hr/rss/rsszup{broj}.xml) |
+| HZZ RSS po zanimanju | skupine zanimanja | [Katalog HZZ-a](https://data.gov.hr/ckan/dataset/slobodna-radna-mjesta-po-zanimanju) |
+| MUP | izdane dozvole i djelatnosti | [Skup podataka MUP-a na Portalu otvorenih podataka](https://data.gov.hr/ckan/dataset/statisticki-podaci-izdanih-dozvola-za-boravak-i-rad-u-travnju-2023-godine); 41 mjesečni izvještaj, travanj 2023. – kolovoz 2026. |
+| DZS | stanovništvo po županijama | Lokalni CSV izvadak „Procjena stanovništva prema dobnim skupinama i spolu, po županijama, 31.12.”; [izravna PxWeb API tablica SP22_2](https://web.dzs.hr/PXWeb/api/v1/hr/Stanovni%C5%A1tvo/Procjene%20stanovni%C5%A1tva/SP22_2.px); zadnja godina 2024. |
+| DZS | zaposlenost, nezaposlenost i aktivno stanovništvo | [Administrativni izvori, tablica 9.2.3.](https://podaci.dzs.hr/media/4snl4v1e/zaposlenost-administrativni-izvori.xlsx); privremeni podaci do rujna 2026. |
+
+Detaljan popis poveznica nalazi se u [`data/SOURCES.txt`](data/SOURCES.txt).
+
+### Kratki rječnik
+
+- **RSS** je format u kojem HZZ objavljuje strojno čitljiv popis trenutno
+  dostupnih oglasa.
+- **Oglas** je objava na HZZ-u; ne mora značiti jedno slobodno radno mjesto
+  jer može obuhvatiti više radnika ili biti ponovno objavljen.
+- **Stopa na 1.000 stanovnika** omogućuje usporedbu regija različite veličine.
+  Broj stanovnika je nazivnik, odnosno vrijednost prema kojoj se broj oglasa
+  ili dozvola preračunava.
+- **HZZ oglasi na 1.000 stanovnika** prikazuju broj oglasa u odnosu na broj
+  stanovnika. To je omjer objava, ne broj slobodnih radnih mjesta po radniku.
+- **Kumulativna vrijednost** zbraja dozvole evidentirane od početka godine do
+  datuma MUP-ova izvještaja.
+- **Snapshot** je lokalno spremljeni izvadak izvora u trenutku preuzimanja.
+- **Demografski nazivnik 15–64** je procijenjeni broj stanovnika te dobi koji
+  se koristi za usporedbu oglasa. Dob 15–64 nije isto što i aktivna radna snaga:
+  u toj skupini mogu biti zaposleni, nezaposleni, učenici, studenti i druge osobe.
+
+## Metodologija
+
+### Regionalna usporedba
+
+HZZ oglasi se grupiraju prema regiji i prepoznatoj skupini zanimanja. Aplikacija
+prikazuje broj oglasa, broj oglasa na 1.000 stanovnika i broj oglasa na 1.000
+stanovnika u dobi 15–64. MUP-ove izdane dozvole i njihova stopa po stanovniku
+ostaju zaseban dodatni kontekst i ne ulaze u izračun HZZ vrijednosti.
+
+Demografski podaci koriste procjenu stanovništva za 2024. godinu. HZZ oglasi
+su noviji izvadak, pa stopa na 1.000 stanovnika 15–64 nije vremenski potpuno
+usklađena s oglasima. Ona opisuje odnos oglasa prema veličini dobne skupine,
+ne omjer slobodnih radnih mjesta i aktivne radne snage.
+
+Za izračun indeksa ponude i potražnje potrebni su vremenski i prostorno
+usporedivi podaci o slobodnim radnim mjestima i nezaposlenim osobama. Oglas
+može obuhvatiti više radnika ili biti ponovno objavljen, a dostupna DZS serija
+radne snage u ovom projektu nije regionalno usporediva s HZZ oglasima. Zato
+aplikacija takav indeks ne izračunava.
+
+### Usporedba zanimanja i djelatnosti
+
+HZZ oglasi se prvo razvrstavaju prema kategoriji iz opisa oglasa, a kod
+nedostajuće ili nepotpune kategorije koristi se povezani HZZ RSS po zanimanju.
+Nepotpune oznake usklađuju se s potpunijim oznakama iz istog izvatka. Za
+nedvosmislene nazive „doktor/doktorica medicine” (ne veterinarske medicine) i
+„keramičar/keramičarka” primjenjuje se izričito pravilo normalizacije.
+Ako kategorija i dalje nedostaje, mali skup pravila naslova povezuje jasne
+nazive kuhar/konobar/čistač sa skupinom jednostavnih prodajnih i uslužnih
+zanimanja, instalaterska i električarska zanimanja s građevinskom skupinom,
+osobnog asistenta sa zdravstvom i socijalnom skrbi te izričita radna mjesta u
+proizvodnji s proizvodnom skupinom. Ta pravila ne pokušavaju zaključiti
+kvalifikaciju iz naziva; višeznačni ili općeniti nazivi ostaju nerazvrstani.
+Pojedinačni oglas prikazuje i izvorni naziv/kategoriju i primijenjenu kategoriju
+kako bi se ispravak mogao provjeriti. Oglasi bez pouzdane klasifikacije ostaju
+„Nerazvrstano”.
+
+Klasifikacija je ujednačena u šire skupine HZZ-a, a nije detaljna klasifikacija
+svakog zanimanja. Pravila iz naziva oglasa su deterministička i oslanjaju se na
+naziv, nisu neovisno validirana prema stručno označenom uzorku te zato mogu
+pogrešno razvrstati pojedinačne oglase. Izvorna kategorija, naziv oglasa i izvor
+klasifikacije zadržavaju se radi provjere, no korisnik ne smije tumačiti
+normaliziranu kategoriju kao potvrđenu stručnu procjenu.
+
+MUP-ove dozvole prikazuju se prema MUP-ovim djelatnostima kao dodatni kontekst.
+To su podaci o izdanim dozvolama, a ne o trenutačno aktivnim dozvolama ili
+stvarnom broju zaposlenih stranih radnika. HZZ zanimanja i MUP djelatnosti
+ostaju odvojene klasifikacije jer nisu izravno usporedive.
+
+### Interakcije
+
+Korisnik može:
+
+- odabrati regiju,
+- usporediti dvije regije,
+- pretražiti skupinu zanimanja ili pojedinačni naziv HZZ oglasa,
+- provjeriti izvor i primijenjeno pravilo kategorije za pojedinačni oglas,
+- odabrati skupine zanimanja i usporediti njihove HZZ oglase po regiji,
+  kao apsolutni broj ili na 1.000 stanovnika,
+- filtrirati MUP-ovu i nacionalnu DZS seriju po godini na sažetku,
+- odabrati broj zanimanja na grafikonu,
+- preuzeti prikazane tablice u XLSX formatu.
+
+## Ograničenja
+
+- HZZ RSS prikazuje oglase dostupne preko HZZ-a u trenutku preuzimanja; nije
+  potpuna evidencija svih slobodnih radnih mjesta u gospodarstvu ni arhiva svih
+  objava. Oglas može obuhvatiti više radnika.
+- Deduplikacija koristi ključ regija + GUID; ako GUID nedostaje, koristi
+  poveznicu, a ako nedostaju oba, naziv oglasa i datum objave. Ponovno objavljen
+  oglas s drugim identifikatorom može ostati kao zaseban zapis.
+- HZZ oglas može prestati biti dostupan prije sljedećeg preuzimanja, a spremljeni
+  izvadak predstavlja snapshot u trenutku preuzimanja, ne bazu koja se stalno
+  ažurira.
+- HZZ kategorije mogu nedostajati ili biti skraćene; naziv oglasa i izvorna
+  kategorija ostaju vidljivi uz normaliziranu kategoriju. Pravila iz naslova
+  primjenjuju se samo na prepoznate nazive, nisu neovisno validirana i mogu
+  pogrešno razvrstati oglas; nepoznati ili višeznačni oglasi ostaju nerazvrstani.
+- MUP-ove dozvole su izdane dozvole, a ne broj trenutačno zaposlenih stranih radnika.
+- MUP-ovi mjesečni izvještaji sadrže kumulativne vrijednosti do datuma izvještaja.
+- U priloženom izvatku ima 41 MUP izvještaj od travnja 2023. do kolovoza 2026.;
+  kasniji izvještaji nisu uključeni u snapshot ove verzije.
+- MUP ne daje istu regionalnu razinu za Grad Zagreb i Zagrebačku županiju, pa su spojeni.
+- HZZ zanimanja i MUP djelatnosti nisu izravno usporedive klasifikacije.
+- DZS procjena stanovništva za regionalne stope odnosi se na 2024. godinu.
+- Udio stanovništva 15–64 i 65+ odnosi se na istu procjenu iz 2024.; dobna
+  skupina nije isto što i aktivna radna snaga.
+- HZZ oglasi dostupni su noviji od demografskog nazivnika, pa usporedba na
+  1.000 stanovnika 15–64 ima različit vremenski obuhvat izvora.
+- Regionalni nazivnik u ovoj verziji koristi procjenu stanovništva za 2024.;
+  novija godina nije dostupna u DZS PxWeb tablici SP22_2 provjerenoj 09.11.2026.
+- U spremljenom HZZ izvatku 547 od 5.920 oglasa (9,2 %) nema pouzdano
+  prepoznatu kategoriju; njihova klasifikacija nije uključena u agregate
+  zanimanja ni u usporedbu zanimanja po regijama, ali se oglasi mogu pregledati
+  u tablici pojedinačnih oglasa.
+- DZS nacionalna serija aktivnog stanovništva je privremena; u izvatku obuhvaća
+  listopad 2024. – rujan 2026. i nije regionalno usporediva s HZZ oglasima.
+- Dostupni izvori imaju različite datume i vremenske obuhvate.
+- Oglas nije nužno jedno slobodno radno mjesto, a MUP-ova dozvola nije dokaz
+  trenutačnog zaposlenja. Dostupni regionalni podaci ne omogućuju izračun
+  usporedivog omjera slobodnih radnih mjesta i nezaposlenih osoba.
+- Aplikacija radi nad lokalnim snapshotima, nema automatsko osvježavanje niti
+  jamči da su lokalne datoteke najnovije objave izvora.
+
+Ograničenja su namjerno prikazana na stranici **Podaci i metodologija** kako bi
+korisnik mogao pravilno tumačiti rezultate i razlikovati opisni pokazatelj od
+službene statistike.
+
+## Transparentnost i AI
+
+AI je korišten kao pomoć pri analizi potreba projekta, oblikovanju metodologije,
+izradi i provjeri programskog koda te pisanju dokumentacije. Izbor izvora,
+tumačenje ograničenja i konačna odgovornost za projekt ostaju na autorici.

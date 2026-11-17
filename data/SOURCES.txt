@@ -1,0 +1,40 @@
+Datum preuzimanja: 09.11.2026.
+Napomena: izvori se mogu mijenjati nakon ovog datuma. Za reproduciranje
+preuzmite ih ponovno s navedenih poveznica i zabilježite novi datum.
+
+DZS:
+- Regionalni nazivnik: stanovništvo/DE_SP22_2_20261107-115338.csv
+  Naslov u datoteci: "Procjena stanovništva prema dobnim skupinama i spolu,
+  po županijama, 31.12."; zadnja dostupna godina je 2024.
+  PxWeb API tablica SP22_2:
+  https://web.dzs.hr/PXWeb/api/v1/hr/Stanovni%C5%A1tvo/Procjene%20stanovni%C5%A1tva/SP22_2.px
+- Aktivno stanovništvo: data/dzs/zaposlenost-administrativni-izvori.xlsx,
+  tablica 9.2.3. (privremeni mjesečni podaci; snapshot do rujna 2026.)
+  https://podaci.dzs.hr/media/4snl4v1e/zaposlenost-administrativni-izvori.xlsx
+- data/dzs/procjene-stanovnistva.xlsx sadrži nacionalne procjene, ali se ne
+  koristi kao regionalni nazivnik u ovoj verziji.
+
+HZZ:
+- data/hzz_zupanije/rsszup1.xml ... rsszup21.xml
+  http://burzarada.hzz.hr/rss/rsszup{broj}.xml
+- data/hzz_zanimanja/rsskat1001.xml ... rsskat1024.xml
+  http://burzarada.hzz.hr/rss/rsskat{kategorija}.xml
+- HZZ katalog:
+  https://data.gov.hr/ckan/dataset/slobodna-radna-mjesta-po-zanimanju
+
+MUP:
+- Izvještaji o izdanim dozvolama:
+  https://data.gov.hr/ckan/dataset/statisticki-podaci-izdanih-dozvola-za-boravak-i-rad-u-travnju-2023-godine
+
+Provjera izvora 09.11.2026.: otvoreni katalog MUP-a sadrži 41 mjesečni izvještaj
+od travnja 2023. do kolovoza 2026.; kasniji izvještaji nisu navedeni u katalogu.
+DZS PxWeb tablica SP22_2 zadnje je dostupna za 2024. godinu.
+HZZ RSS pri provjeri ima najnoviju objavu od 06.11.2026. i isti sadržaj oglasa
+kao lokalni izvadak. DZS nacionalna radna knjiga odgovara aktualnoj datoteci na
+izvoru i završava rujnom 2026.
+
+Napomena: HZZ RSS datoteke predstavljaju trenutno dostupne oglase, a ne
+nužno broj stvarnih slobodnih radnih mjesta. MUP snapshot sadrži mjesečne
+izvještaje od travnja 2023. do kolovoza 2026. DZS skupovi imaju vlastite
+vremenske obuhvate: regionalno stanovništvo završava 2024., dok je nacionalna
+serija aktivnog stanovništva privremena i završava u rujnu 2026.
